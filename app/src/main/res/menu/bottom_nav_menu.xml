@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:checked="true"
+        android:iconTint="@color/purple_200"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_explore"
+        android:icon="@drawable/ic_search"
+        android:iconTint="@color/purple_200"
+        android:title="@string/title_explore" />
+
+    <item
+        android:id="@+id/navigation_movies"
+        android:icon="@drawable/ic_movie"
+        android:iconTint="@color/purple_200"
+        android:title="@string/title_movies" />
+
+    <item
+        android:id="@+id/navigation_tv"
+        android:icon="@drawable/ic_tv"
+        android:iconTint="@color/purple_200"
+        android:title="@string/title_tv" />
+
+    <item
+        android:id="@+id/navigation_favorite"
+        android:icon="@drawable/ic_favorite"
+        android:iconTint="@color/purple_200"
+        android:title="@string/title_favorite" />
+
+</menu>

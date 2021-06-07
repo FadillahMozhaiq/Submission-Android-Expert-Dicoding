@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Jetpack Submission</string>
+    <string name="android_jetpack">Android Jetpack</string>
+    <string name="dicoding_submission">Dicoding Submission</string>
+    <string name="title_home">Home</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_favorite">Favorite</string>
+    <string name="title_movies">Movies</string>
+    <string name="title_tv">Tv Show</string>
+    <string name="simple_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="now_playing">Now playing</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="search_movie">Search for movie</string>
+    <string name="search_tv_show">Search for tv show</string>
+    <string name="search_people">Search for people</string>
+    <string name="search_company">Search for company</string>
+    <string name="search_any">Search for any</string>
+    <string name="choose_what_you_want_to_explore">Choose What You Want To Explore</string>
+    <string name="our_tv_show_collection">Our TV Show Collection</string>
+    <string name="our_movies_collection">Our Movies Collection</string>
+    <string name="tab_text_1">Movies</string>
+    <string name="tab_text_2">Tv Show</string>
+    <string name="try_to_add_some_favorite_movie">You can try to add some favorite movie</string>
+    <string name="try_to_add_some_favorite_tv_show">You can try to add some favorite tv show</string>
+    <string name="transition_name">profileTransition</string>
+    <string name="overview">Overview</string>
+    <string name="x">X</string>
+    <string name="preference_key">id.fadillah.jetpacksubmission.PREFERENCE_KEY</string>
+    <string name="preference_name">id.fadillah.jetpacksubmission.PREFERENCE_NAME</string>
+    <string name="ied_fitri">Selamat Hari Raya Idul Fitri</string>
+    <string name="apologize">Mohon Maaf Lahir dan Batin</string>
+
+    <string-array name="explore">
+        <item>Movies</item>
+        <item>Tv Show</item>
+        <item>People</item>
+        <item>Company</item>
+        <item>Multi Search</item>
+    </string-array>
+</resources>
