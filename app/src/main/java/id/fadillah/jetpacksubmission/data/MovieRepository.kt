@@ -110,7 +110,7 @@ class MovieRepository(
     override fun getMovieExplore(query: String): LiveData<Resource<PagedList<MovieEntity>>> =
         object : NetworkBoundResource<PagedList<MovieEntity>, List<ResultsItemExplore>>() {
             override fun loadFromDB(): LiveData<PagedList<MovieEntity>> =
-                LivePagedListBuilder(localDataSource.getMovieExplore(query).mapByPage  {
+                LivePagedListBuilder(localDataSource.getMovieExplore(query).mapByPage {
                     DataMapper.mapMovieExploreToEntity(it)
                 }, config).build()
 
@@ -144,7 +144,7 @@ class MovieRepository(
     override fun getPersonExplore(query: String): LiveData<Resource<PagedList<MovieEntity>>> =
         object : NetworkBoundResource<PagedList<MovieEntity>, List<ResultsPersonExploreItem>>() {
             override fun loadFromDB(): LiveData<PagedList<MovieEntity>> =
-                LivePagedListBuilder(localDataSource.getPersonExplore(query).mapByPage  {
+                LivePagedListBuilder(localDataSource.getPersonExplore(query).mapByPage {
                     DataMapper.mapPersonExploreToEntity(it)
                 }, config).build()
 
@@ -227,13 +227,13 @@ class MovieRepository(
         }.asLiveData()
 
     override fun getDetailMovie(id: Int): LiveData<Resource<MovieEntity>> =
-        object : NetworkBoundResource<Resource<MovieEntity>>, DetailMovieResponse() {
-            override fun loadFromDB(): LiveData<Resource<MovieEntity>> =
+        object : NetworkBoundResource<MovieEntity, DetailMovieResponse>() {
+            override fun loadFromDB(): LiveData<MovieEntity> =
                 Transformations.map(localDataSource.getMovieById(id)) {
                     DataMapper.detailMovieToMovie(it)
                 }
 
-            override fun shouldFetch(data: MovieEntity>?): Boolean =
+            override fun shouldFetch(data: MovieEntity?): Boolean =
                 isOnline(context) || data == null
 
             override fun createCall(): LiveData<ApiResponse<DetailMovieResponse>> =
@@ -244,14 +244,14 @@ class MovieRepository(
             }
         }.asLiveData()
 
-    override fun getDetailTv(id: Int): LiveData<Resource<PagedList<MovieEntity>>> =
-        object : NetworkBoundResource<Resource<MovieEntity>, DetailTvResponse>() {
-            override fun loadFromDB(): LiveData<Resource<MovieEntity>> =
+    override fun getDetailTv(id: Int): LiveData<Resource<MovieEntity>> =
+        object : NetworkBoundResource<MovieEntity, DetailTvResponse>() {
+            override fun loadFromDB(): LiveData<MovieEntity> =
                 Transformations.map(localDataSource.getMovieById(id)) {
                     DataMapper.detailTvToMovie(it)
                 }
 
-            override fun shouldFetch(data: PagedList<MovieEntity>?): Boolean =
+            override fun shouldFetch(data: MovieEntity?): Boolean =
                 isOnline(context) || data == null
 
             override fun createCall(): LiveData<ApiResponse<DetailTvResponse>> =
@@ -261,4 +261,22 @@ class MovieRepository(
                 localDataSource.updateMovie(detailTvToDatabaseEntity(data))
             }
         }.asLiveData()
+
+    override fun isItFavorite(id: Int): LiveData<Boolean> =
+        Transformations.map(localDataSource.checkIsFavorite(id)) {
+            it.isNotEmpty()
+        }
+
+    override suspend fun setFavorite(status: Boolean, id: Int) =
+        localDataSource.setFavorite(status, id)
+
+    override fun getAllFavoriteMovie(): LiveData<PagedList<MovieEntity>> =
+        LivePagedListBuilder(localDataSource.getAllFavoriteMovies().mapByPage {
+            DataMapper.mapMovieTrendingToEntity(it)
+        }, config).build()
+
+    override fun getAllFavoriteTv(): LiveData<PagedList<MovieEntity>> =
+        LivePagedListBuilder(localDataSource.getAllFavoriteTv().mapByPage {
+            DataMapper.mapTvTrendingToEntity(it)
+        }, config).build()
 }

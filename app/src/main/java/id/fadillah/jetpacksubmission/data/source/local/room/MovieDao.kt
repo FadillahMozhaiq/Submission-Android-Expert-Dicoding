@@ -1,5 +1,6 @@
 package id.fadillah.jetpacksubmission.data.source.local.room
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
@@ -13,24 +14,23 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieDatabaseEntity)
 
-    @Query("SELECT * FROM movies WHERE favorite = 1")
-    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    @Query("SELECT * FROM movies WHERE favorite = 1 AND id = :id")
+    fun checkIsFavorite(id: Int): LiveData<List<MovieDatabaseEntity>>
+
+    @Query("UPDATE movies SET favorite = :favorite WHERE id = :id")
+    suspend fun setFavorite(favorite: Boolean, id: Int)
 
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :movieId")
-    fun getMovieById(movieId: Int): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getMovieById(movieId: Int): LiveData<MovieDatabaseEntity>
 
-    @Query("UPDATE movies SET genres = :genres, status = :status, tagLine = :tagLine, favorite = :favorite WHERE id = :id")
+    @Query("UPDATE movies SET genres = :genres, status = :status, tagLine = :tagLine WHERE id = :id")
     fun updateMovie(
         id: Int,
         genres: String,
         status: String?,
-        tagLine: String?,
-        favorite: Boolean
+        tagLine: String?
     ): Int
-
-    @Delete
-    fun deleteMovie(movie: MovieDatabaseEntity): Int
 
     //    Movies Upcoming
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'upcoming'")
@@ -75,4 +75,12 @@ interface MovieDao {
     //    Movies Top Rated
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'trendingTv'")
     fun getAllTrendingTv(): DataSource.Factory<Int, MovieDatabaseEntity>
+
+    //  Favorite Movies
+    @Query("SELECT * FROM movies WHERE favorite = 1 AND type = 0")
+    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+
+    //  Favorite TV
+    @Query("SELECT * FROM movies WHERE favorite = 1 AND type = 1")
+    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity>
 }

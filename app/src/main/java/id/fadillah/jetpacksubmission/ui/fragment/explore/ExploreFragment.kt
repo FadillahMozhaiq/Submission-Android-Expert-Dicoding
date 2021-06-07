@@ -118,18 +118,19 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
         when (searchType) {
             0 -> {
                 exploreViewModel.getMovieExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when(movies.status) {
+                    when (movies.status) {
                         Status.LOADING -> {
                             showLoading(true)
                         }
                         Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
                             showLoading(false)
                             showEmptyIndicator(true)
                         }
                         Status.SUCCESS -> {
                             showLoading(false)
-                            moviesAdapter.setMovies(movies.data)
+                            moviesAdapter.submitList(movies.data)
                             if (movies.data.isNullOrEmpty())
                                 showEmptyIndicator(true)
                             else
@@ -140,18 +141,19 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
             }
             1 -> {
                 exploreViewModel.getTvExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when(movies.status) {
+                    when (movies.status) {
                         Status.LOADING -> {
                             showLoading(true)
                         }
                         Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
                             showLoading(false)
                             showEmptyIndicator(true)
                         }
                         Status.SUCCESS -> {
                             showLoading(false)
-                            moviesAdapter.setMovies(movies.data)
+                            moviesAdapter.submitList(movies.data)
                             if (movies.data.isNullOrEmpty())
                                 showEmptyIndicator(true)
                             else
@@ -163,18 +165,19 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
             2 -> {
                 showLoading(true)
                 exploreViewModel.getPersonExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when(movies.status) {
+                    when (movies.status) {
                         Status.LOADING -> {
                             showLoading(true)
                         }
                         Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
                             showLoading(false)
                             showEmptyIndicator(true)
                         }
                         Status.SUCCESS -> {
                             showLoading(false)
-                            moviesAdapter.setMovies(movies.data)
+                            moviesAdapter.submitList(movies.data)
                             if (movies.data.isNullOrEmpty())
                                 showEmptyIndicator(true)
                             else
@@ -186,18 +189,19 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
             3 -> {
                 showLoading(true)
                 exploreViewModel.getCompanyExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when(movies.status) {
+                    when (movies.status) {
                         Status.LOADING -> {
                             showLoading(true)
                         }
                         Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
                             showLoading(false)
                             showEmptyIndicator(true)
                         }
                         Status.SUCCESS -> {
                             showLoading(false)
-                            moviesAdapter.setMovies(movies.data)
+                            moviesAdapter.submitList(movies.data)
                             if (movies.data.isNullOrEmpty())
                                 showEmptyIndicator(true)
                             else
@@ -209,18 +213,19 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
             4 -> {
                 showLoading(true)
                 exploreViewModel.getMultiSearch(query).observe(viewLifecycleOwner) { movies ->
-                    when(movies.status) {
+                    when (movies.status) {
                         Status.LOADING -> {
                             showLoading(true)
                         }
                         Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
                             showLoading(false)
                             showEmptyIndicator(true)
                         }
                         Status.SUCCESS -> {
                             showLoading(false)
-                            moviesAdapter.setMovies(movies.data)
+                            moviesAdapter.submitList(movies.data)
                             if (movies.data.isNullOrEmpty())
                                 showEmptyIndicator(true)
                             else

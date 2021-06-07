@@ -2,23 +2,27 @@ package id.fadillah.jetpacksubmission.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.databinding.ItemMovieBinding
 import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper
 import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
 
-class PopularMovieAdapter (private val movieItemClickListener: OnMovieItemClickListener) :
-    RecyclerView.Adapter<PopularMovieAdapter.MovieViewHolder>() {
-    private val listMovie = ArrayList<MovieEntity>()
+class PopularMovieAdapter(private val movieItemClickListener: OnMovieItemClickListener) :
+    PagedListAdapter<MovieEntity, PopularMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
-    fun setMovies(movies: List<MovieEntity>?) {
-        movies ?: return
-        listMovie.apply {
-            clear()
-            addAll(movies)
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
+            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
+                return oldItem == newItem
+            }
         }
-        notifyDataSetChanged()
     }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
@@ -44,8 +48,6 @@ class PopularMovieAdapter (private val movieItemClickListener: OnMovieItemClickL
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(listMovie[position])
+        getItem(position)?.let { holder.bind(it) }
     }
-
-    override fun getItemCount(): Int = listMovie.size
 }

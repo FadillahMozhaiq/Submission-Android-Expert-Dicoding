@@ -1,42 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_container_favorite_movie"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_container_favorite_movie"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.favoritemovie.FavoriteMovieFragment">
-    
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_fav_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/size_8"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_favorite_movie"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_movie" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <RelativeLayout
         android:id="@+id/nothing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bold_italic"
-            android:textSize="18sp"
-            android:text="@string/try_to_add_some_favorite_movie"
             android:layout_below="@+id/favorite_lottie"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/bold_italic"
+            android:text="@string/try_to_add_some_favorite_movie"
+            android:textSize="18sp" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/favorite_lottie"
-            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
-            app:lottie_loop="true"
+            android:layout_centerInParent="true"
             app:lottie_autoPlay="true"
+            app:lottie_loop="true"
             app:lottie_rawRes="@raw/mobile_interactions_lottie" />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_favorite_movie"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+    <ProgressBar
+        android:id="@+id/pb_fav_movies"
+        style="@android:style/Widget.Material.Light.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

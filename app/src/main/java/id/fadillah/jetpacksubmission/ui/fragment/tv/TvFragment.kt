@@ -62,7 +62,7 @@ class TvFragment : Fragment(), OnMovieItemClickListener {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        moviesAdapter.setMovies(movies.data)
+                        moviesAdapter.submitList(movies.data)
                     }
                     showLoading(false)
                 }

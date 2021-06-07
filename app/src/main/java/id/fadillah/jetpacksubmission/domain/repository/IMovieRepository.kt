@@ -28,8 +28,12 @@ interface IMovieRepository {
     //    Detail Activity
     fun getDetailMovie(id: Int): LiveData<Resource<MovieEntity>>
     fun getDetailTv(id: Int): LiveData<Resource<MovieEntity>>
+    fun isItFavorite(id: Int): LiveData<Boolean>
+    suspend fun setFavorite(status: Boolean, id: Int)
 
-//    Favorite Movie Fragment
+    //    Favorite Movie Fragment
+    fun getAllFavoriteMovie(): LiveData<PagedList<MovieEntity>>
 
-//    Favorite Tv Show
+    //    Favorite Tv Show
+    fun getAllFavoriteTv(): LiveData<PagedList<MovieEntity>>
 }

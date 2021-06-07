@@ -14,8 +14,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/detail_movie_cover"
@@ -172,8 +171,7 @@
                 android:layout_marginEnd="@dimen/size_16"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/detail_movie_icon"
-                tools:listitem="@layout/genre_item" />
+                app:layout_constraintTop_toBottomOf="@+id/detail_movie_icon"/>
 
             <TextView
                 android:id="@+id/detail_movie_desc"
@@ -199,12 +197,22 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="245dp" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_16"
+                android:src="@drawable/ic_unfavorite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_movie_desc" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/layout_shimmer_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

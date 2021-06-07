@@ -24,6 +24,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private val viewModel: DetailViewModel by viewModel()
     private val genreAdapter: GenreAdapter by lazy { GenreAdapter() }
+    private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +50,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initView(movie: MovieEntity) {
+        supportActionBar?.title = movie.title
         with(binding) {
             ImageHelper.getImage(detailMovieImgShimmer, IMAGE_URL + movie.posterPath)
             ImageHelper.getImage(detailMovieImg, IMAGE_URL + movie.posterPath)
@@ -57,12 +59,35 @@ class DetailActivity : AppCompatActivity() {
                 adapter = genreAdapter
                 setHasFixedSize(true)
             }
+            fabFavorite.setOnClickListener {
+                isFavorite = !isFavorite
+                viewModel.setFavorite(isFavorite, movie.id)
+                setFavorite(isFavorite)
+                if (isFavorite) {
+                    Toast.makeText(
+                        this@DetailActivity,
+                        "Success Add to Favorite!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                } else
+                    Toast.makeText(
+                        this@DetailActivity,
+                        "Success Remove From Favorite!",
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+            }
+            viewModel.checkFavorite(movie.id).observe(this@DetailActivity) { isFavorite ->
+                setFavorite(isFavorite)
+                this@DetailActivity.isFavorite = isFavorite
+            }
         }
     }
 
     private fun getDataTv(id: Int) {
         viewModel.getDetailTv(id).observe(this) { movie ->
-            when(movie.status) {
+            when (movie.status) {
                 Status.LOADING -> {
                     showLoading(true)
                 }
@@ -79,17 +104,26 @@ class DetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        genreAdapter.setMovies(movie.data?.genres)
-                        setView(movie.data as MovieEntity)
+                        genreAdapter.setMovies(movie.data.genres)
+                        setView(movie.data)
                     }
                 }
             }
         }
     }
 
+    private fun setFavorite(favorite: Boolean) {
+        with(binding) {
+            if (favorite)
+                fabFavorite.setImageResource(R.drawable.ic_favorite)
+            else
+                fabFavorite.setImageResource(R.drawable.ic_unfavorite)
+        }
+    }
+
     private fun getDataMovie(id: Int) {
         viewModel.getDetailMovie(id).observe(this) { movie ->
-            when(movie.status) {
+            when (movie.status) {
                 Status.LOADING -> {
                     showLoading(true)
                 }
@@ -106,8 +140,8 @@ class DetailActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
-                        genreAdapter.setMovies(movie.data?.genres)
-                        setView(movie.data as MovieEntity)
+                        genreAdapter.setMovies(movie.data.genres)
+                        setView(movie.data)
                     }
                 }
             }
@@ -127,7 +161,8 @@ class DetailActivity : AppCompatActivity() {
                     4 -> mediaType ?: "Any"
                     else -> mediaType ?: "Unknown"
                 }
-                detailMovieDesc.text = if (overview.isNotEmpty()) overview else getString(R.string.simple_text)
+                detailMovieDesc.text =
+                    if (overview.isNotEmpty()) overview else getString(R.string.simple_text)
                 detailMovieRating.text = rating.toString()
                 if (backgroundPath != null) {
                     ImageHelper.getImage(detailMovieCover, IMAGE_URL_ORIGINAL + backgroundPath)

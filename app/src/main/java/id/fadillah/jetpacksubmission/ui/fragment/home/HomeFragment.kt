@@ -81,12 +81,13 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
 
         with(homeViewModel) {
             getUpcomingMovie().observe(viewLifecycleOwner) { movies ->
-                when(movies.status) {
+                when (movies.status) {
                     Status.LOADING -> {
                         showLoading(true)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                            .show()
                         showLoading(false)
                     }
                     Status.SUCCESS -> {
@@ -104,13 +105,14 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
                     }
                 }
             }
-            getNowPlaying().observe(viewLifecycleOwner){ movies ->
-                when(movies.status) {
+            getNowPlaying().observe(viewLifecycleOwner) { movies ->
+                when (movies.status) {
                     Status.LOADING -> {
                         showLoading(true)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                            .show()
                         showLoading(false)
                     }
                     Status.SUCCESS -> {
@@ -121,19 +123,20 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            movieAdapter.setMovies(movies.data)
+                            movieAdapter.submitList(movies.data)
                         }
                         showLoading(false)
                     }
                 }
             }
             getPopular().observe(viewLifecycleOwner) { movies ->
-                when(movies.status) {
+                when (movies.status) {
                     Status.LOADING -> {
                         showLoading(true)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                            .show()
                         showLoading(false)
                     }
                     Status.SUCCESS -> {
@@ -144,19 +147,20 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            popularMovieAdapter.setMovies(movies.data)
+                            popularMovieAdapter.submitList(movies.data)
                         }
                         showLoading(false)
                     }
                 }
             }
-            getTopRated().observe(viewLifecycleOwner)  { movies ->
-                when(movies.status) {
+            getTopRated().observe(viewLifecycleOwner) { movies ->
+                when (movies.status) {
                     Status.LOADING -> {
                         showLoading(true)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                            .show()
                         showLoading(false)
                     }
                     Status.SUCCESS -> {
@@ -167,7 +171,7 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            topRatedMovieAdapter.setMovies(movies.data)
+                            topRatedMovieAdapter.submitList(movies.data)
                         }
                         showLoading(false)
                     }

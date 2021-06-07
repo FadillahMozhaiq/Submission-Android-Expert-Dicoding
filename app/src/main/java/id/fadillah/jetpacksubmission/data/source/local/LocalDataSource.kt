@@ -1,5 +1,6 @@
 package id.fadillah.jetpacksubmission.data.source.local
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
@@ -7,21 +8,30 @@ import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
 class LocalDataSource(private val movieDao: MovieDao) {
 
     //    Movies
-    suspend fun insertMovies(movies: List<MovieDatabaseEntity>) = movieDao.insertMovies(movies)
+    suspend fun insertMovies(movies: List<MovieDatabaseEntity>) =
+        movieDao.insertMovies(movies)
+
     suspend fun insertMovie(movie: MovieDatabaseEntity) = movieDao.insertMovie(movie)
     fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
         movieDao.getAllFavoriteMovies()
 
-    fun getMovieById(movieId: Int): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
+        movieDao.getAllFavoriteTv()
+
+    fun checkIsFavorite(id: Int): LiveData<List<MovieDatabaseEntity>> = movieDao.checkIsFavorite(id)
+
+    fun getMovieById(movieId: Int): LiveData<MovieDatabaseEntity> =
         movieDao.getMovieById(movieId)
+
+    suspend fun setFavorite(status: Boolean, id: Int) =
+        movieDao.setFavorite(status, id)
 
     fun updateMovie(movie: MovieDatabaseEntity): Int = with(movie) {
         movieDao.updateMovie(
             id,
             genres?.joinToString(", ") { it } ?: "Unknown",
             status,
-            tagLine,
-            favorite)
+            tagLine)
     }
 //    fun deleteMovie(movie: MovieDatabaseEntity): Int = movieDao.deleteMovie(movie)
 
