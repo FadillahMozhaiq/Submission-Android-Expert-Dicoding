@@ -106,7 +106,7 @@ class HomeActivityTest {
         )
         onView(withId(R.id.rv_tv_show)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                18,
+                2,
                 click()
             )
         )

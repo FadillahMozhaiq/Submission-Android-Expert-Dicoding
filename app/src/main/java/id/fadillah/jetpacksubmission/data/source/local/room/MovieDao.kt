@@ -3,22 +3,36 @@ package id.fadillah.jetpacksubmission.data.source.local.room
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
+import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
+import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 
 @Dao
 interface MovieDao {
-    //    Movies
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovies(movie: List<MovieDatabaseEntity>)
-
+    //    Favorite
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: MovieDatabaseEntity)
 
-    @Query("SELECT * FROM movies WHERE favorite = 1 AND id = :id")
-    fun checkIsFavorite(id: Int): LiveData<List<MovieDatabaseEntity>>
+    @Query("SELECT * FROM favorite_movie WHERE idMovie = :id")
+    fun checkIsFavoriteMovie(id: Int): LiveData<List<FavoriteMovieEntity>>
 
-    @Query("UPDATE movies SET favorite = :favorite WHERE id = :id")
-    suspend fun setFavorite(favorite: Boolean, id: Int)
+    @Query("SELECT * FROM favorite_tv WHERE idTvShow = :id")
+    fun checkIsFavoriteTv(id: Int): LiveData<List<FavoriteTvEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFavoriteMovie(movieFavorite: FavoriteMovieEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFavoriteTv(tvFavorite: FavoriteTvEntity)
+
+    @Delete
+    suspend fun deleteFavoriteMovie(movieFavorite: FavoriteMovieEntity)
+
+    @Delete
+    suspend fun deleteFavoriteTv(tvFavorite: FavoriteTvEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovies(movie: List<MovieDatabaseEntity>)
 
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :movieId")
@@ -77,10 +91,10 @@ interface MovieDao {
     fun getAllTrendingTv(): DataSource.Factory<Int, MovieDatabaseEntity>
 
     //  Favorite Movies
-    @Query("SELECT * FROM movies WHERE favorite = 1 AND type = 0")
+    @Query("SELECT * FROM movies WHERE id IN (SELECT * FROM favorite_movie)")
     fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
 
     //  Favorite TV
-    @Query("SELECT * FROM movies WHERE favorite = 1 AND type = 1")
+    @Query("SELECT * FROM movies WHERE id IN (SELECT * FROM favorite_tv)")
     fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity>
 }

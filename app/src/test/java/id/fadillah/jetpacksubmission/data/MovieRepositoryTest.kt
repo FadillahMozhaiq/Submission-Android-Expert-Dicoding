@@ -2,239 +2,215 @@ package id.fadillah.jetpacksubmission.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
-import id.fadillah.jetpacksubmission.domain.usecase.MovieUseCase
+import androidx.paging.DataSource
+import com.nhaarman.mockitokotlin2.verify
+import id.fadillah.jetpacksubmission.data.source.local.LocalDataSource
+import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
+import id.fadillah.jetpacksubmission.data.source.network.RemoteDataSource
+import id.fadillah.jetpacksubmission.utils.LiveDataTestUtils
+import id.fadillah.jetpacksubmission.utils.PagedListUtil
 import id.fadillah.jetpacksubmission.utils.dummy.DataDummy
-import junit.framework.Assert.assertNotNull
+import id.fadillah.jetpacksubmission.vo.Resource
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.Mockito.mock
 
-
-@RunWith(MockitoJUnitRunner::class)
 class MovieRepositoryTest {
-    private val dummyMovies = DataDummy.getMovie()
-
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-    @Mock
-    private lateinit var useCase: MovieUseCase
-    @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
-    @Mock
-    private lateinit var observerDetail: Observer<MovieEntity>
+
+    private val remote = mock(RemoteDataSource::class.java)
+    private val local = mock(LocalDataSource::class.java)
+
+    private val repository = FakeMovieRepository(local, remote)
+
     private val query = "Marvel"
     private val idMovie: Int = 460465
     private val idTv: Int = 1399
-    private val dummyMovie = DataDummy.getDetailMovie()
-    private val dummyTv = DataDummy.getDetailTv()
+
+    private val dummyMovies = DataDummy.getMovie()
+    private val dummyTv = DataDummy.getDetailTvDatabase()
 
     @Test
     fun getUpcoming() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllUpcomingMovies()).thenReturn(dataSourceFactory)
+        repository.getUpcoming()
 
-        `when`(useCase.getUpcoming()).thenReturn(movies)
-        val movieEntity = useCase.getUpcoming().value
-        verify(useCase).getUpcoming()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getUpcoming().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllUpcomingMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getNowPlaying() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllNowPlayingMovies()).thenReturn(dataSourceFactory)
+        repository.getNowPlaying()
 
-        `when`(useCase.getNowPlaying()).thenReturn(movies)
-        val movieEntity = useCase.getNowPlaying().value
-        verify(useCase).getNowPlaying()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getNowPlaying().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllNowPlayingMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getPopular() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllPopularMovies()).thenReturn(dataSourceFactory)
+        repository.getPopular()
 
-        `when`(useCase.getPopular()).thenReturn(movies)
-        val movieEntity = useCase.getPopular().value
-        verify(useCase).getPopular()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getPopular().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllPopularMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getTopRated() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllTopRatedMovies()).thenReturn(dataSourceFactory)
+        repository.getTopRated()
 
-        `when`(useCase.getTopRated()).thenReturn(movies)
-        val movieEntity = useCase.getTopRated().value
-        verify(useCase).getTopRated()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getTopRated().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllTopRatedMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getMovieExplore() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getMovieExplore(query)).thenReturn(dataSourceFactory)
+        repository.getMovieExplore(query)
 
-        `when`(useCase.getMovieExplore(query)).thenReturn(movies)
-        val movieEntity = useCase.getMovieExplore(query).value
-        verify(useCase).getMovieExplore(query)
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getMovieExplore(query).observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getMovieExplore(query)
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getTvExplore() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getTvExplore(query)).thenReturn(dataSourceFactory)
+        repository.getTvExplore(query)
 
-        `when`(useCase.getTvExplore(query)).thenReturn(movies)
-        val movieEntity = useCase.getTvExplore(query).value
-        verify(useCase).getTvExplore(query)
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getTvExplore(query).observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getTvExplore(query)
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getPersonExplore() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getPersonExplore(query)).thenReturn(dataSourceFactory)
+        repository.getPersonExplore(query)
 
-        `when`(useCase.getPersonExplore(query)).thenReturn(movies)
-        val movieEntity = useCase.getPersonExplore(query).value
-        verify(useCase).getPersonExplore(query)
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getPersonExplore(query).observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getPersonExplore(query)
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getCompanyExplore() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getCompanyExplore(query)).thenReturn(dataSourceFactory)
+        repository.getCompanyExplore(query)
 
-        `when`(useCase.getCompanyExplore(query)).thenReturn(movies)
-        val movieEntity = useCase.getCompanyExplore(query).value
-        verify(useCase).getCompanyExplore(query)
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getCompanyExplore(query).observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getCompanyExplore(query)
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getMultiSearch() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getMultiSearch(query)).thenReturn(dataSourceFactory)
+        repository.getMultiSearch(query)
 
-        `when`(useCase.getMultiSearch(query)).thenReturn(movies)
-        val movieEntity = useCase.getMultiSearch(query).value
-        verify(useCase).getMultiSearch(query)
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getMultiSearch(query).observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getMultiSearch(query)
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getTrendingMovie() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllTrendingMovies()).thenReturn(dataSourceFactory)
+        repository.getTrendingMovie()
 
-        `when`(useCase.getTrendingMovie()).thenReturn(movies)
-        val movieEntity = useCase.getTrendingMovie().value
-        verify(useCase).getTrendingMovie()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getTrendingMovie().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllTrendingMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getTrendingTv() {
-        val movies = MutableLiveData<List<MovieEntity>>()
-        movies.value = dummyMovies
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllTrendingTv()).thenReturn(dataSourceFactory)
+        repository.getTrendingTv()
 
-        `when`(useCase.getTrendingTv()).thenReturn(movies)
-        val movieEntity = useCase.getTrendingTv().value
-        verify(useCase).getTrendingTv()
-        assertNotNull(movieEntity)
-        assertEquals(20, movieEntity?.size)
-
-        useCase.getTrendingTv().observeForever(observer)
-        verify(observer).onChanged(dummyMovies)
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllTrendingTv()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 
     @Test
     fun getDetailMovie() {
-        val movie = MutableLiveData<MovieEntity>()
-        movie.value = dummyMovie
+        val dummyEntity = MutableLiveData<MovieDatabaseEntity>()
+        dummyEntity.value = DataDummy.getDetailMovieDatabase()
+        `when`(local.getMovieById(idMovie)).thenReturn(dummyEntity)
 
-        `when`(useCase.getDetailMovie(idMovie)).thenReturn(movie)
-        val movieEntity = useCase.getDetailMovie(idMovie).value as MovieEntity
-        verify(useCase).getDetailMovie(idMovie)
-
-        assertNotNull(movieEntity)
-        assertEquals(dummyMovie.id, movieEntity.id)
-        assertEquals(dummyMovie.title, movieEntity.title)
-        assertEquals(dummyMovie.posterPath, movieEntity.posterPath)
-        assertEquals(dummyMovie.overview, movieEntity.overview)
-
-        useCase.getDetailMovie(idMovie).observeForever(observerDetail)
-        verify(observerDetail).onChanged(dummyMovie)
+        val movieEntity = LiveDataTestUtils.getValue(repository.getDetailMovie(idMovie))
+        verify(local).getMovieById(idMovie)
+        assertNotNull(movieEntity.data)
+        assertNotNull(movieEntity.data?.title)
+        assertEquals(dummyMovies[0].title, movieEntity.data?.title)
     }
 
     @Test
     fun getDetailTv() {
-        val tv = MutableLiveData<MovieEntity>()
-        tv.value = dummyTv
+        val dummyEntity = MutableLiveData<MovieDatabaseEntity>()
+        dummyEntity.value = DataDummy.getDetailTvDatabase()
+        `when`(local.getMovieById(idTv)).thenReturn(dummyEntity)
 
-        `when`(useCase.getDetailTv(idTv)).thenReturn(tv)
-        val tvEntity = useCase.getDetailTv(idTv).value as MovieEntity
-        verify(useCase).getDetailTv(idTv)
-
-        assertNotNull(tvEntity)
-        assertEquals(dummyTv.id, tvEntity.id)
-        assertEquals(dummyTv.title, tvEntity.title)
-        assertEquals(dummyTv.posterPath, tvEntity.posterPath)
-        assertEquals(dummyTv.overview, tvEntity.overview)
-
-        useCase.getDetailTv(idTv).observeForever(observerDetail)
-        verify(observerDetail).onChanged(dummyTv)
+        val tvEntity = LiveDataTestUtils.getValue(repository.getDetailTv(idTv))
+        verify(local).getMovieById(idTv)
+        assertNotNull(tvEntity.data)
+        assertNotNull(tvEntity.data?.title)
+        assertEquals(dummyTv.title, tvEntity.data?.title)
     }
 }

@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 class DetailViewModel(private val useCase: MovieUseCase) : ViewModel() {
     fun getDetailMovie(id: Int): LiveData<Resource<MovieEntity>> = useCase.getDetailMovie(id)
     fun getDetailTv(id: Int): LiveData<Resource<MovieEntity>> = useCase.getDetailTv(id)
-    fun checkFavorite(id: Int): LiveData<Boolean> = useCase.isItFavorite(id)
-    fun setFavorite(favorite: Boolean, id: Int) =
+    fun checkFavorite(id: Int, type: Int): LiveData<Boolean> = useCase.isItFavorite(id, type)
+    fun setFavorite(favorite: Boolean, id: Int, type: Int) =
         viewModelScope.launch {
-            useCase.setFavorite(favorite, id)
+            useCase.setFavorite(favorite, id, type)
         }
 }

@@ -18,6 +18,5 @@ data class MovieDatabaseEntity(
     val date: String? = null,
     val rating: Double? = null,
     val mediaType: String? = null,
-    var favorite: Boolean = false,
     var saveFor: String? = null
 )

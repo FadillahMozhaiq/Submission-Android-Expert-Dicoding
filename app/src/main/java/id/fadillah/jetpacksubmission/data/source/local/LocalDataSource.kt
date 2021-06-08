@@ -1,7 +1,12 @@
 package id.fadillah.jetpacksubmission.data.source.local
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
+import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
+import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
 
@@ -12,19 +17,53 @@ class LocalDataSource(private val movieDao: MovieDao) {
         movieDao.insertMovies(movies)
 
     suspend fun insertMovie(movie: MovieDatabaseEntity) = movieDao.insertMovie(movie)
-    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
-        movieDao.getAllFavoriteMovies()
 
-    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
-        movieDao.getAllFavoriteTv()
-
-    fun checkIsFavorite(id: Int): LiveData<List<MovieDatabaseEntity>> = movieDao.checkIsFavorite(id)
+    fun checkIsFavorite(id: Int, type: Int): LiveData<Boolean> =
+        when (type) {
+            0 -> Transformations.map(
+                movieDao.checkIsFavoriteMovie(id)
+            ) {
+                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
+                it.isNotEmpty()
+            }
+            1 -> Transformations.map(
+                movieDao.checkIsFavoriteTv(id)
+            ) {
+                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
+                it.isNotEmpty()
+            }
+            else -> Transformations.map(
+                movieDao.checkIsFavoriteMovie(id)
+            ) {
+                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
+                it.isNotEmpty()
+            }
+        }
 
     fun getMovieById(movieId: Int): LiveData<MovieDatabaseEntity> =
         movieDao.getMovieById(movieId)
 
-    suspend fun setFavorite(status: Boolean, id: Int) =
-        movieDao.setFavorite(status, id)
+    suspend fun setFavorite(status: Boolean, id: Int, type: Int) {
+        if (type == 0) {
+//            Movies
+            if (status) {
+//                Insert
+                movieDao.insertFavoriteMovie(FavoriteMovieEntity(id))
+            } else {
+//                Delete
+                movieDao.deleteFavoriteMovie(FavoriteMovieEntity(id))
+            }
+        } else if (type == 1) {
+//            Tv Show
+            if (status) {
+//                Insert
+                movieDao.insertFavoriteTv(FavoriteTvEntity(id))
+            } else {
+//                Delete
+                movieDao.deleteFavoriteTv(FavoriteTvEntity(id))
+            }
+        }
+    }
 
     fun updateMovie(movie: MovieDatabaseEntity): Int = with(movie) {
         movieDao.updateMovie(
@@ -78,4 +117,12 @@ class LocalDataSource(private val movieDao: MovieDao) {
     //    Tv Trending
     fun getAllTrendingTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
         movieDao.getAllTrendingTv()
+
+    //    Movies Trending
+    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+        movieDao.getAllFavoriteMovies()
+
+    //    Tv Trending
+    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
+        movieDao.getAllFavoriteTv()
 }

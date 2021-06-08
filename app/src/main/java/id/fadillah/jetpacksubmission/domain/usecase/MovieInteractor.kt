@@ -47,11 +47,11 @@ class MovieInteractor(private val movieRepository: IMovieRepository) :
     override fun getDetailTv(id: Int): LiveData<Resource<MovieEntity>> =
         movieRepository.getDetailTv(id)
 
-    override fun isItFavorite(id: Int): LiveData<Boolean> =
-        movieRepository.isItFavorite(id)
+    override fun isItFavorite(id: Int, type: Int): LiveData<Boolean> =
+        movieRepository.isItFavorite(id, type)
 
-    override suspend fun setFavorite(status: Boolean, id: Int) =
-        movieRepository.setFavorite(status, id)
+    override suspend fun setFavorite(status: Boolean, id: Int, type: Int) =
+        movieRepository.setFavorite(status, id, type)
 
     override fun getAllFavoriteMovie(): LiveData<PagedList<MovieEntity>> =
         movieRepository.getAllFavoriteMovie()

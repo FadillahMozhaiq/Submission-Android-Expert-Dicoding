@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import id.fadillah.jetpacksubmission.R
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.databinding.FavoriteTvShowFragmentBinding
@@ -23,7 +23,7 @@ class FavoriteTvShowFragment : Fragment(), OnMovieItemClickListener {
         fun newInstance() = FavoriteTvShowFragment()
     }
 
-    private val viewModel: FavoriteTvShowViewModel by viewModel ()
+    private val viewModel: FavoriteTvShowViewModel by viewModel()
     private var _binding: FavoriteTvShowFragmentBinding? = null
     private val binding get() = _binding!!
     private val moviesAdapter: MoviesAdapter by lazy { MoviesAdapter(this) }
@@ -41,7 +41,7 @@ class FavoriteTvShowFragment : Fragment(), OnMovieItemClickListener {
 
         binding.rvFavoriteTvShow.apply {
             adapter = moviesAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
         }
         showLoading(true)

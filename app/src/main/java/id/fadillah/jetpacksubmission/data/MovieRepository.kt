@@ -24,7 +24,7 @@ import id.fadillah.jetpacksubmission.utils.mapper.DataMapper.mapTrendingTvToData
 import id.fadillah.jetpacksubmission.utils.mapper.DataMapper.mapTvExploreToDatabaseEntity
 import id.fadillah.jetpacksubmission.vo.Resource
 
-class MovieRepository(
+class  MovieRepository(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource,
     private val context: Context
@@ -262,13 +262,10 @@ class MovieRepository(
             }
         }.asLiveData()
 
-    override fun isItFavorite(id: Int): LiveData<Boolean> =
-        Transformations.map(localDataSource.checkIsFavorite(id)) {
-            it.isNotEmpty()
-        }
+    override fun isItFavorite(id: Int, type: Int): LiveData<Boolean> = localDataSource.checkIsFavorite(id, type)
 
-    override suspend fun setFavorite(status: Boolean, id: Int) =
-        localDataSource.setFavorite(status, id)
+    override suspend fun setFavorite(status: Boolean, id: Int, type: Int) =
+        localDataSource.setFavorite(status, id, type)
 
     override fun getAllFavoriteMovie(): LiveData<PagedList<MovieEntity>> =
         LivePagedListBuilder(localDataSource.getAllFavoriteMovies().mapByPage {

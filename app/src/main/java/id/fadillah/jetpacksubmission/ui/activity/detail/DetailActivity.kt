@@ -40,13 +40,27 @@ class DetailActivity : AppCompatActivity() {
         initView(movie)
 
         when (movie.type) {
-            0 -> getDataMovie(movie.id)
-            1 -> getDataTv(movie.id)
+            0 -> {
+                getDataMovie(movie.id)
+                showFab(true)
+            }
+            1 -> {
+                getDataTv(movie.id)
+                showFab(true)
+            }
             else -> {
+                showFab(false)
                 setView(movie)
                 showLoading(false)
             }
         }
+    }
+
+    private fun showFab(show: Boolean) {
+        binding.fabFavorite.visibility = if (show)
+            View.VISIBLE
+        else View.GONE
+
     }
 
     private fun initView(movie: MovieEntity) {
@@ -61,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
             }
             fabFavorite.setOnClickListener {
                 isFavorite = !isFavorite
-                viewModel.setFavorite(isFavorite, movie.id)
+                viewModel.setFavorite(isFavorite, movie.id, movie.type)
                 setFavorite(isFavorite)
                 if (isFavorite) {
                     Toast.makeText(
@@ -78,10 +92,11 @@ class DetailActivity : AppCompatActivity() {
                     )
                         .show()
             }
-            viewModel.checkFavorite(movie.id).observe(this@DetailActivity) { isFavorite ->
-                setFavorite(isFavorite)
-                this@DetailActivity.isFavorite = isFavorite
-            }
+            viewModel.checkFavorite(movie.id, movie.type)
+                .observe(this@DetailActivity) { isFavorite ->
+                    setFavorite(isFavorite)
+                    this@DetailActivity.isFavorite = isFavorite
+                }
         }
     }
 
