@@ -42,6 +42,44 @@ class HomeActivityTest {
 
     /* Memastikan Seluruh data tampil pada fragment home
     * Menutup custom dialog
+    * Mengecek navigation_movies tampil
+    * Memberi tindakan click pada navigation_movies
+    * Mengecek rv_movies tampil
+    * Memberi tindakan click pada rv_movies
+    * Mengecek fab_favorite tampil
+    * Memberi tindakan click pada fab_favorite
+    * Memberi tindakan pressBack()
+    * Mengecek navigation_favorite tampil
+    * Memberi tindakan click pada navigation_favorite
+    * Mengecek rv_favorite_movie tampil
+    */
+    @Test
+    fun loadFavoriteMovie() {
+        onView(isRoot()).perform(pressBack())
+        onView(withId(R.id.navigation_movies)).check(matches(isDisplayed()))
+        onView(withId(R.id.navigation_movies)).perform(click())
+        onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movies)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                10
+            )
+        )
+        onView(withId(R.id.rv_movies)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                2,
+                click()
+            )
+        )
+        onView(withId(R.id.fab_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.fab_favorite)).perform(click())
+        onView(isRoot()).perform(pressBack())
+        onView(withId(R.id.navigation_favorite)).check(matches(isDisplayed()))
+        onView(withId(R.id.navigation_favorite)).perform(click())
+        onView(withId(R.id.rv_favorite_movie)).check(matches(isDisplayed()))
+    }
+
+    /* Memastikan Seluruh data tampil pada fragment home
+    * Menutup custom dialog
     * Mengecek imageSlider tampil
     * Mengecek rv_now_playing tampil
     * Mengecek rv_popular tampil
