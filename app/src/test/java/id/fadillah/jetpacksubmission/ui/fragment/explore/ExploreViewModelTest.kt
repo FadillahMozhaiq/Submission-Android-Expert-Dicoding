@@ -5,20 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.nhaarman.mockitokotlin2.verify
-import id.fadillah.jetpacksubmission.data.MovieRepository
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.domain.usecase.MovieUseCase
 import id.fadillah.jetpacksubmission.utils.dummy.DataDummy
 import id.fadillah.jetpacksubmission.vo.Resource
 import junit.framework.Assert.assertNotNull
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -35,7 +32,6 @@ class ExploreViewModelTest {
     private lateinit var pagedList: PagedList<MovieEntity>
 
     private lateinit var viewModel: ExploreViewModel
-    private val dummyMovies = DataDummy.getMovie()
     private val query = "Marvel"
     private val queryPerson = "Leo"
 

@@ -2,7 +2,6 @@ package id.fadillah.jetpacksubmission.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.vo.Resource
 

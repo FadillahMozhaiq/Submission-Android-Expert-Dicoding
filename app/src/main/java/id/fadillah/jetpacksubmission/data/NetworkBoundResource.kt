@@ -1,5 +1,6 @@
 package id.fadillah.jetpacksubmission.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import id.fadillah.jetpacksubmission.data.source.network.ApiResponse
@@ -10,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class NetworkBoundResource<ResultType, RequestType>() {
+abstract class NetworkBoundResource<ResultType, RequestType> {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
@@ -32,7 +33,9 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
         }
     }
 
-    protected fun onFetchFailed() {}
+    protected fun onFetchFailed() {
+        Log.e("TAG", "onFetchFailed: ")
+    }
 
     protected abstract fun loadFromDB(): LiveData<ResultType>
 

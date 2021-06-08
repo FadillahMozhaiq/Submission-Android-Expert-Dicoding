@@ -30,8 +30,6 @@
     <string name="preference_name">id.fadillah.jetpacksubmission.PREFERENCE_NAME</string>
     <string name="ied_fitri">Selamat Hari Raya Idul Fitri</string>
     <string name="apologize">Mohon Maaf Lahir dan Batin</string>
-    <string name="your_favorite_movie">Your Favorite Movie ..</string>
-    <string name="your_favorite_tv_show">Your Favorite Tv Show ..</string>
 
     <string-array name="explore">
         <item>Movies</item>

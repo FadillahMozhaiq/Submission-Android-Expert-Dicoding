@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.nhaarman.mockitokotlin2.verify
-import id.fadillah.jetpacksubmission.data.MovieRepository
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.domain.usecase.MovieUseCase
 import id.fadillah.jetpacksubmission.vo.Resource

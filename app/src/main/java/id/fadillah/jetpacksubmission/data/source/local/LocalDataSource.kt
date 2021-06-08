@@ -1,41 +1,33 @@
 package id.fadillah.jetpacksubmission.data.source.local
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.DataSource
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
 
 class LocalDataSource(private val movieDao: MovieDao) {
-
     //    Movies
     suspend fun insertMovies(movies: List<MovieDatabaseEntity>) =
         movieDao.insertMovies(movies)
-
-    suspend fun insertMovie(movie: MovieDatabaseEntity) = movieDao.insertMovie(movie)
 
     fun checkIsFavorite(id: Int, type: Int): LiveData<Boolean> =
         when (type) {
             0 -> Transformations.map(
                 movieDao.checkIsFavoriteMovie(id)
             ) {
-                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
                 it.isNotEmpty()
             }
             1 -> Transformations.map(
                 movieDao.checkIsFavoriteTv(id)
             ) {
-                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
                 it.isNotEmpty()
             }
             else -> Transformations.map(
                 movieDao.checkIsFavoriteMovie(id)
             ) {
-                Log.e("TAG", "checkIsFavorite: $type and result ${it}")
                 it.isNotEmpty()
             }
         }
@@ -72,7 +64,6 @@ class LocalDataSource(private val movieDao: MovieDao) {
             status,
             tagLine)
     }
-//    fun deleteMovie(movie: MovieDatabaseEntity): Int = movieDao.deleteMovie(movie)
 
     //    Movies Upcoming
     fun getAllUpcomingMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =

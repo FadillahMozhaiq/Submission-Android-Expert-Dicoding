@@ -1,7 +1,6 @@
 package id.fadillah.jetpacksubmission.utils.mapper
 
 import android.annotation.SuppressLint
-import androidx.paging.PagedList
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.network.response.*
