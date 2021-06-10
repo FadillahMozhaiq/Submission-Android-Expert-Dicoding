@@ -11,6 +11,7 @@ import id.fadillah.jetpacksubmission.utils.LiveDataTestUtils
 import id.fadillah.jetpacksubmission.utils.PagedListUtil
 import id.fadillah.jetpacksubmission.utils.dummy.DataDummy
 import id.fadillah.jetpacksubmission.vo.Resource
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
@@ -212,5 +213,39 @@ class MovieRepositoryTest {
         assertNotNull(tvEntity.data)
         assertNotNull(tvEntity.data?.title)
         assertEquals(dummyTv.title, tvEntity.data?.title)
+    }
+
+    @Test
+    fun getAllFavoriteMovie() {
+        runBlocking {
+            local.setFavorite(true, idMovie, 0)
+        }
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllFavoriteMovies()).thenReturn(dataSourceFactory)
+        repository.getAllFavoriteMovie()
+
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllFavoriteMovies()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
+    }
+
+    @Test
+    fun getAllFavoriteTv() {
+        runBlocking {
+            local.setFavorite(true, idTv, 0)
+        }
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieDatabaseEntity>
+        `when`(local.getAllFavoriteTv()).thenReturn(dataSourceFactory)
+        repository.getAllFavoriteTv()
+
+        val movieEntity =
+            Resource.success(PagedListUtil.mockPagedList(DataDummy.getMovie()))
+        verify(local).getAllFavoriteTv()
+        assertNotNull(movieEntity.data)
+        assertEquals(dummyMovies.size.toLong(), movieEntity.data?.size?.toLong())
     }
 }
