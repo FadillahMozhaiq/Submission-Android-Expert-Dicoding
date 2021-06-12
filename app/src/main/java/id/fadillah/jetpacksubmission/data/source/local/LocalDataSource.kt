@@ -7,11 +7,18 @@ import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
+import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource
+import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource.decrement
+import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource.increment
 
 class LocalDataSource(private val movieDao: MovieDao) {
     //    Movies
-    suspend fun insertMovies(movies: List<MovieDatabaseEntity>) =
+    suspend fun insertMovies(movies: List<MovieDatabaseEntity>) {
+        increment()
         movieDao.insertMovies(movies)
+        decrement()
+    }
+
 
     fun checkIsFavorite(id: Int, type: Int): LiveData<Boolean> =
         when (type) {
@@ -36,23 +43,28 @@ class LocalDataSource(private val movieDao: MovieDao) {
         movieDao.getMovieById(movieId)
 
     suspend fun setFavorite(status: Boolean, id: Int, type: Int) {
+        increment()
         if (type == 0) {
 //            Movies
             if (status) {
 //                Insert
                 movieDao.insertFavoriteMovie(FavoriteMovieEntity(id))
+                decrement()
             } else {
 //                Delete
                 movieDao.deleteFavoriteMovie(FavoriteMovieEntity(id))
+                decrement()
             }
         } else if (type == 1) {
 //            Tv Show
             if (status) {
 //                Insert
                 movieDao.insertFavoriteTv(FavoriteTvEntity(id))
+                decrement()
             } else {
 //                Delete
                 movieDao.deleteFavoriteTv(FavoriteTvEntity(id))
+                decrement()
             }
         }
     }

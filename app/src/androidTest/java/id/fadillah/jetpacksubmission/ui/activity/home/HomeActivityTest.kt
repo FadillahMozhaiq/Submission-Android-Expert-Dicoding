@@ -70,8 +70,9 @@ class HomeActivityTest {
                 click()
             )
         )
+        onView(withId(R.id.container_detail)).perform(swipeUp())
         onView(withId(R.id.fab_favorite)).check(matches(isDisplayed()))
-        onView(withId(R.id.fab_favorite)).perform(click())
+        onView(withId(R.id.fab_favorite)).perform(forceClick())
         onView(isRoot()).perform(pressBack())
         onView(withId(R.id.navigation_favorite)).check(matches(isDisplayed()))
         onView(withId(R.id.navigation_favorite)).perform(click())
@@ -87,11 +88,12 @@ class HomeActivityTest {
     */
     @Test
     fun loadAllDataFragmentHome() {
-        onView(isRoot()).perform(pressBack())
+        onView(withId(R.id.container_home)).perform(pressBack())
         onView(withId(R.id.imageSlider)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_now_playing)).check(matches(isDisplayed()))
-        onView(isRoot()).perform(swipeUp())
+        onView(withId(R.id.container_home)).perform(swipeUp())
         onView(withId(R.id.rv_popular)).check(matches(isDisplayed()))
+        onView(withId(R.id.container_home)).perform(swipeUp())
         onView(withId(R.id.rv_top_rated)).check(matches(isDisplayed()))
     }
 
@@ -280,6 +282,23 @@ class HomeActivityTest {
 
             override fun perform(uiController: UiController?, view: View) {
                 (view as SearchView).setQuery(text, false)
+            }
+        }
+    }
+
+    fun forceClick(): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> {
+                return allOf(isClickable(), isEnabled(), isDisplayed())
+            }
+
+            override fun getDescription(): String {
+                return "force click"
+            }
+
+            override fun perform(uiController: UiController, view: View) {
+                view.performClick() // perform click without checking view coordinates.
+                uiController.loopMainThreadUntilIdle()
             }
         }
     }
