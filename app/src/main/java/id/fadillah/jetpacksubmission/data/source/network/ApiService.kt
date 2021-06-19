@@ -11,91 +11,91 @@ interface ApiService {
      * Home Fragment
      */
     @GET("movie/upcoming")
-    fun getUpcoming(
+    suspend fun getUpcoming(
         @Query("api_key") apiKey: String
-    ): Call<UpcomingMovieResponse>
+    ): UpcomingMovieResponse
 
     @GET("movie/now_playing")
-    fun getNowPlaying(
+    suspend fun getNowPlaying(
         @Query("api_key") apiKey: String
-    ): Call<NowPlayingResponse>
+    ): NowPlayingResponse
 
     @GET("movie/popular")
-    fun getPopular(
+    suspend fun getPopular(
         @Query("api_key") apiKey: String
-    ): Call<PopularMovieResponse>
+    ): PopularMovieResponse
 
     @GET("movie/top_rated")
-    fun getTopRated(
+    suspend fun getTopRated(
         @Query("api_key") apiKey: String
-    ): Call<TopRatedMovieResponse>
+    ): TopRatedMovieResponse
 
     /*
      * Explore Fragment
      */
     @GET("search/movie")
-    fun getMovieExplore(
+    suspend fun getMovieExplore(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("include_adult") includeAdult: String
-    ): Call<MovieExploreResponse>
+        @Query("include_adult") includeAdult: String = "true"
+    ): MovieExploreResponse
 
     @GET("search/tv")
-    fun getTvExplore(
+    suspend fun getTvExplore(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("include_adult") includeAdult: String
-    ): Call<TvExploreResponse>
+        @Query("include_adult") includeAdult: String = "true"
+    ): TvExploreResponse
 
     @GET("search/person")
-    fun getPersonExplore(
+    suspend fun getPersonExplore(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("include_adult") includeAdult: String
-    ): Call<PersonExploreResponse>
+        @Query("include_adult") includeAdult: String = "true"
+    ): PersonExploreResponse
 
     @GET("search/company")
-    fun getCompanyExplore(
+    suspend fun getCompanyExplore(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("include_adult") includeAdult: String
-    ): Call<CompanyExploreResponse>
+        @Query("include_adult") includeAdult: String = "true"
+    ): CompanyExploreResponse
 
     @GET("search/multi")
-    fun getMultiExplore(
+    suspend fun getMultiExplore(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-        @Query("include_adult") includeAdult: String
-    ): Call<MultiSearchResponse>
+        @Query("include_adult") includeAdult: String = "true"
+    ): MultiSearchResponse
 
     /*
     * Movie Fragment
      */
     @GET("trending/movie/week")
-    fun getTrendingMovie(
+    suspend fun getTrendingMovie(
         @Query("api_key") apiKey: String
-    ): Call<MovieTrendingResponse>
+    ): MovieTrendingResponse
 
     /*
     * TV Fragment
      */
     @GET("trending/tv/week")
-    fun getTrendingTv(
+    suspend fun getTrendingTv(
         @Query("api_key") apiKey: String
-    ): Call<TvTrendingResponse>
+    ): TvTrendingResponse
 
     /*
     * Detail Activity
      */
     @GET("movie/{id}")
-    fun getDetailMovie(
+    suspend fun getDetailMovie(
         @Path("id") id: Int,
         @Query("api_key") apiKey: String
-    ): Call<DetailMovieResponse>
+    ): DetailMovieResponse
 
     @GET("tv/{id}")
-    fun getDetailTv(
+    suspend fun getDetailTv(
         @Path("id") id: Int,
         @Query("api_key") apiKey: String
-    ): Call<DetailTvResponse>
+    ): DetailTvResponse
 }

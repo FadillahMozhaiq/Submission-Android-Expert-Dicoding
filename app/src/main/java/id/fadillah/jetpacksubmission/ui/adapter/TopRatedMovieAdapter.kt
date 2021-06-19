@@ -2,27 +2,25 @@ package id.fadillah.jetpacksubmission.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import id.fadillah.jetpacksubmission.data.model.MovieEntity
 import id.fadillah.jetpacksubmission.databinding.ItemMovieBinding
+import id.fadillah.jetpacksubmission.utils.diffutil.MovieDiffUtil
 import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper
 import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
 
 class TopRatedMovieAdapter(private val movieItemClickListener: OnMovieItemClickListener) :
-    PagedListAdapter<MovieEntity, TopRatedMovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+    RecyclerView.Adapter<TopRatedMovieAdapter.MovieViewHolder>() {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieEntity>() {
-            override fun areItemsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem.id == newItem.id
-            }
+    private var listMovie = emptyList<MovieEntity>()
 
-            override fun areContentsTheSame(oldItem: MovieEntity, newItem: MovieEntity): Boolean {
-                return oldItem == newItem
-            }
-        }
+    fun setData(newData: List<MovieEntity>?) {
+        newData ?: return
+        val movieDiffUtil = MovieDiffUtil(listMovie, newData)
+        val diffResult = DiffUtil.calculateDiff(movieDiffUtil)
+        listMovie = newData
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class MovieViewHolder(private val binding: ItemMovieBinding) :
@@ -48,6 +46,8 @@ class TopRatedMovieAdapter(private val movieItemClickListener: OnMovieItemClickL
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        listMovie[position].let { holder.bind(it) }
     }
+
+    override fun getItemCount(): Int = listMovie.size
 }

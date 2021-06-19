@@ -16,7 +16,7 @@ import id.fadillah.jetpacksubmission.databinding.FragmentMoviesBinding
 import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity
 import id.fadillah.jetpacksubmission.ui.adapter.MoviesAdapter
 import id.fadillah.jetpacksubmission.ui.adapter.OnMovieItemClickListener
-import id.fadillah.jetpacksubmission.vo.Status
+import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment(), OnMovieItemClickListener {
@@ -43,28 +43,38 @@ class MoviesFragment : Fragment(), OnMovieItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTrendingMovies().observe(viewLifecycleOwner)  { movies ->
-            when(movies.status) {
-                Status.LOADING -> {
-                    showLoading(true)
-                }
-                Status.ERROR -> {
-                    Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT).show()
-                    showLoading(false)
-                }
-                Status.SUCCESS -> {
-                    showLoading(false)
-                    if (movies.data.isNullOrEmpty()) {
-                        Toast.makeText(
-                            context,
-                            "No Trending Movie!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        moviesAdapter.submitList(movies.data)
+
+        viewModel.getTrendingMovies().observe(viewLifecycleOwner) { movies ->
+            if (movies != null) {
+                when (movies) {
+                    is Resource.Loading -> {
+                        showLoading(true)
                     }
-                    showLoading(false)
+                    is Resource.Error -> {
+                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                            .show()
+                        showLoading(false)
+                    }
+                    is Resource.Success -> {
+                        showLoading(false)
+                        if (movies.data.isNullOrEmpty()) {
+                            Toast.makeText(
+                                context,
+                                "No Trending Movie!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            moviesAdapter.setData(movies.data)
+                        }
+                        showLoading(false)
+                    }
                 }
+            } else {
+                Toast.makeText(
+                    context,
+                    "No Trending Movie!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

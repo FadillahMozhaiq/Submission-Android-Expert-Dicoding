@@ -19,7 +19,7 @@ import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity.Companion
 import id.fadillah.jetpacksubmission.ui.adapter.*
 import id.fadillah.jetpacksubmission.ui.fragment.customdialog.CustomDialog
 import id.fadillah.jetpacksubmission.utils.helper.PreferenceHelper
-import id.fadillah.jetpacksubmission.vo.Status
+import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -81,100 +81,131 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
 
         with(homeViewModel) {
             getUpcomingMovie().observe(viewLifecycleOwner) { movies ->
-                when (movies.status) {
-                    Status.LOADING -> {
-                        showLoading(true)
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                            .show()
-                        showLoading(false)
-                    }
-                    Status.SUCCESS -> {
-                        showLoading(false)
-                        if (movies.data.isNullOrEmpty()) {
-                            Toast.makeText(
-                                context,
-                                "No Upcoming Movie!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            imageSliderAdapter.setSliderData(movies.data)
+                if (movies != null) {
+                    when (movies) {
+                        is Resource.Loading -> {
+                            showLoading(true)
                         }
-                        showLoading(false)
+                        is Resource.Error -> {
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
+                            showLoading(false)
+                        }
+                        is Resource.Success -> {
+                            if (movies.data.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "No Upcoming Movie!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                imageSliderAdapter.setSliderData(movies.data)
+                            }
+                            showLoading(false)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No Upcoming Movie!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             getNowPlaying().observe(viewLifecycleOwner) { movies ->
-                when (movies.status) {
-                    Status.LOADING -> {
-                        showLoading(true)
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                            .show()
-                        showLoading(false)
-                    }
-                    Status.SUCCESS -> {
-                        if (movies.data.isNullOrEmpty()) {
-                            Toast.makeText(
-                                context,
-                                "No Playing Movie Right Now!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            movieAdapter.submitList(movies.data)
+                if (movies != null) {
+                    when (movies) {
+                        is Resource.Loading -> {
+                            showLoading(true)
                         }
-                        showLoading(false)
+                        is Resource.Error -> {
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
+                            showLoading(false)
+                        }
+                        is Resource.Success -> {
+                            if (movies.data.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "No Playing Movie Right Now!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                movieAdapter.setData(movies.data)
+                            }
+                            showLoading(false)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No Playing Movie Right Now!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             getPopular().observe(viewLifecycleOwner) { movies ->
-                when (movies.status) {
-                    Status.LOADING -> {
-                        showLoading(true)
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                            .show()
-                        showLoading(false)
-                    }
-                    Status.SUCCESS -> {
-                        if (movies.data.isNullOrEmpty()) {
-                            Toast.makeText(
-                                context,
-                                "No Popular Movie!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            popularMovieAdapter.submitList(movies.data)
+                if (movies != null) {
+                    when (movies) {
+                        is Resource.Loading -> {
+                            showLoading(true)
                         }
-                        showLoading(false)
+                        is Resource.Error -> {
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
+                            showLoading(false)
+                        }
+                        is Resource.Success -> {
+                            if (movies.data.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "No Popular Movie!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                popularMovieAdapter.setData(movies.data)
+                            }
+                            showLoading(false)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No Popular Movie!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
             getTopRated().observe(viewLifecycleOwner) { movies ->
-                when (movies.status) {
-                    Status.LOADING -> {
-                        showLoading(true)
-                    }
-                    Status.ERROR -> {
-                        Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                            .show()
-                        showLoading(false)
-                    }
-                    Status.SUCCESS -> {
-                        if (movies.data.isNullOrEmpty()) {
-                            Toast.makeText(
-                                context,
-                                "No Top Rated Movie!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            topRatedMovieAdapter.submitList(movies.data)
+                if (movies != null) {
+                    when (movies) {
+                        is Resource.Loading -> {
+                            showLoading(true)
                         }
-                        showLoading(false)
+                        is Resource.Error -> {
+                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
+                                .show()
+                            showLoading(false)
+                        }
+                        is Resource.Success -> {
+                            if (movies.data.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "No Top Rated Movie!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                topRatedMovieAdapter.setData(movies.data)
+                            }
+                            showLoading(false)
+                        }
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "No Top Rated Movie!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

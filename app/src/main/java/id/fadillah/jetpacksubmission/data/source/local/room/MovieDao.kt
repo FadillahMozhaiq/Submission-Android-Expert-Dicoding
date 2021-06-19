@@ -1,11 +1,10 @@
 package id.fadillah.jetpacksubmission.data.source.local.room
 
-import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.room.*
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
@@ -14,10 +13,10 @@ interface MovieDao {
     suspend fun insertMovie(movie: MovieDatabaseEntity)
 
     @Query("SELECT * FROM favorite_movie WHERE idMovie = :id")
-    fun checkIsFavoriteMovie(id: Int): LiveData<List<FavoriteMovieEntity>>
+    fun checkIsFavoriteMovie(id: Int): Flow<List<FavoriteMovieEntity>>
 
     @Query("SELECT * FROM favorite_tv WHERE idTvShow = :id")
-    fun checkIsFavoriteTv(id: Int): LiveData<List<FavoriteTvEntity>>
+    fun checkIsFavoriteTv(id: Int): Flow<List<FavoriteTvEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteMovie(movieFavorite: FavoriteMovieEntity)
@@ -36,10 +35,10 @@ interface MovieDao {
 
     @Transaction
     @Query("SELECT * FROM movies WHERE id = :movieId")
-    fun getMovieById(movieId: Int): LiveData<MovieDatabaseEntity>
+    fun getMovieById(movieId: Int): Flow<MovieDatabaseEntity>
 
     @Query("UPDATE movies SET genres = :genres, status = :status, tagLine = :tagLine WHERE id = :id")
-    fun updateMovie(
+    suspend fun updateMovie(
         id: Int,
         genres: String,
         status: String?,
@@ -48,53 +47,53 @@ interface MovieDao {
 
     //    Movies Upcoming
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'upcoming'")
-    fun getAllUpcomingMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllUpcomingMovies(): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Now Playing
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'nowPlaying'")
-    fun getAllNowPlayingMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllNowPlayingMovies(): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Popular
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'popular'")
-    fun getAllPopularMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllPopularMovies(): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Top Rated
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'topRated'")
-    fun getAllTopRatedMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllTopRatedMovies(): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Explore
     @Query("SELECT * FROM movies WHERE title LIKE :query AND type = 0 ")
-    fun getMovieExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getMovieExplore(query: String): Flow<List<MovieDatabaseEntity>>
 
     //    Tv Explore
     @Query("SELECT * FROM movies WHERE title LIKE :query AND type = 1")
-    fun getTvExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getTvExplore(query: String): Flow<List<MovieDatabaseEntity>>
 
     //    Person Explore
     @Query("SELECT * FROM movies WHERE title LIKE :query AND type = 2")
-    fun getPersonExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getPersonExplore(query: String): Flow<List<MovieDatabaseEntity>>
 
     //    Company Explore
     @Query("SELECT * FROM movies WHERE title LIKE :query AND type = 3")
-    fun getCompanyExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getCompanyExplore(query: String): Flow<List<MovieDatabaseEntity>>
 
     //    Multi Explore
     @Query("SELECT * FROM movies WHERE title LIKE :query")
-    fun getMultiSearch(query: String): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getMultiSearch(query: String): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Trending
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'trendingMovie'")
-    fun getAllTrendingMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllTrendingMovies(): Flow<List<MovieDatabaseEntity>>
 
     //    Movies Top Rated
     @Query("SELECT * FROM movies WHERE saveFor LIKE 'trendingTv'")
-    fun getAllTrendingTv(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllTrendingTv(): Flow<List<MovieDatabaseEntity>>
 
     //  Favorite Movies
     @Query("SELECT * FROM movies WHERE id IN (SELECT * FROM favorite_movie)")
-    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllFavoriteMovies(): Flow<List<MovieDatabaseEntity>>
 
     //  Favorite TV
     @Query("SELECT * FROM movies WHERE id IN (SELECT * FROM favorite_tv)")
-    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity>
+    fun getAllFavoriteTv(): Flow<List<MovieDatabaseEntity>>
 }

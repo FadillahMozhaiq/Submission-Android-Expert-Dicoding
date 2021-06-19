@@ -18,7 +18,7 @@ import id.fadillah.jetpacksubmission.databinding.FragmentExploreBinding
 import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity
 import id.fadillah.jetpacksubmission.ui.adapter.MoviesAdapter
 import id.fadillah.jetpacksubmission.ui.adapter.OnMovieItemClickListener
-import id.fadillah.jetpacksubmission.vo.Status
+import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ExploreFragment : Fragment(), OnMovieItemClickListener,
@@ -118,119 +118,159 @@ class ExploreFragment : Fragment(), OnMovieItemClickListener,
         when (searchType) {
             0 -> {
                 exploreViewModel.getMovieExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when (movies.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                                .show()
-                            showLoading(false)
-                            showEmptyIndicator(true)
-                        }
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            moviesAdapter.submitList(movies.data)
-                            if (movies.data.isNullOrEmpty())
+                    if (movies != null) {
+                        when (movies) {
+                            is Resource.Loading -> {
+                                showLoading(true)
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${movies.message}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                showLoading(false)
                                 showEmptyIndicator(true)
-                            else
-                                showEmptyIndicator(false)
+                            }
+                            is Resource.Success -> {
+                                showLoading(false)
+                                moviesAdapter.setData(movies.data)
+                                if (movies.data.isNullOrEmpty())
+                                    showEmptyIndicator(true)
+                                else
+                                    showEmptyIndicator(false)
+                            }
                         }
+                    } else {
+                        showEmptyIndicator(true)
                     }
                 }
             }
             1 -> {
                 exploreViewModel.getTvExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when (movies.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                                .show()
-                            showLoading(false)
-                            showEmptyIndicator(true)
-                        }
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            moviesAdapter.submitList(movies.data)
-                            if (movies.data.isNullOrEmpty())
+                    if (movies != null) {
+                        when (movies) {
+                            is Resource.Loading -> {
+                                showLoading(true)
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${movies.message}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                showLoading(false)
                                 showEmptyIndicator(true)
-                            else
-                                showEmptyIndicator(false)
+                            }
+                            is Resource.Success -> {
+                                showLoading(false)
+                                moviesAdapter.setData(movies.data)
+                                if (movies.data.isNullOrEmpty())
+                                    showEmptyIndicator(true)
+                                else
+                                    showEmptyIndicator(false)
+                            }
                         }
+                    } else {
+                        showEmptyIndicator(true)
                     }
                 }
             }
             2 -> {
                 showLoading(true)
                 exploreViewModel.getPersonExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when (movies.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                                .show()
-                            showLoading(false)
-                            showEmptyIndicator(true)
-                        }
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            moviesAdapter.submitList(movies.data)
-                            if (movies.data.isNullOrEmpty())
+                    if (movies != null) {
+                        when (movies) {
+                            is Resource.Loading -> {
+                                showLoading(true)
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${movies.message}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                showLoading(false)
                                 showEmptyIndicator(true)
-                            else
-                                showEmptyIndicator(false)
+                            }
+                            is Resource.Success -> {
+                                showLoading(false)
+                                moviesAdapter.setData(movies.data)
+                                if (movies.data.isNullOrEmpty())
+                                    showEmptyIndicator(true)
+                                else
+                                    showEmptyIndicator(false)
+                            }
                         }
+                    } else {
+                        showEmptyIndicator(true)
                     }
                 }
             }
             3 -> {
                 showLoading(true)
                 exploreViewModel.getCompanyExplore(query).observe(viewLifecycleOwner) { movies ->
-                    when (movies.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                                .show()
-                            showLoading(false)
-                            showEmptyIndicator(true)
-                        }
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            moviesAdapter.submitList(movies.data)
-                            if (movies.data.isNullOrEmpty())
+                    if (movies != null) {
+                        when (movies) {
+                            is Resource.Loading -> {
+                                showLoading(true)
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${movies.message}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                showLoading(false)
                                 showEmptyIndicator(true)
-                            else
-                                showEmptyIndicator(false)
+                            }
+                            is Resource.Success -> {
+                                showLoading(false)
+                                moviesAdapter.setData(movies.data)
+                                if (movies.data.isNullOrEmpty())
+                                    showEmptyIndicator(true)
+                                else
+                                    showEmptyIndicator(false)
+                            }
                         }
+                    } else {
+                        showEmptyIndicator(true)
                     }
                 }
             }
             4 -> {
                 showLoading(true)
                 exploreViewModel.getMultiSearch(query).observe(viewLifecycleOwner) { movies ->
-                    when (movies.status) {
-                        Status.LOADING -> {
-                            showLoading(true)
-                        }
-                        Status.ERROR -> {
-                            Toast.makeText(context, "Error: ${movies.message}", Toast.LENGTH_SHORT)
-                                .show()
-                            showLoading(false)
-                            showEmptyIndicator(true)
-                        }
-                        Status.SUCCESS -> {
-                            showLoading(false)
-                            moviesAdapter.submitList(movies.data)
-                            if (movies.data.isNullOrEmpty())
+                    if (movies != null) {
+                        when (movies) {
+                            is Resource.Loading -> {
+                                showLoading(true)
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(
+                                    context,
+                                    "Error: ${movies.message}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                showLoading(false)
                                 showEmptyIndicator(true)
-                            else
-                                showEmptyIndicator(false)
+                            }
+                            is Resource.Success -> {
+                                showLoading(false)
+                                moviesAdapter.setData(movies.data)
+                                if (movies.data.isNullOrEmpty())
+                                    showEmptyIndicator(true)
+                                else
+                                    showEmptyIndicator(false)
+                            }
                         }
+                    } else {
+                        showEmptyIndicator(true)
                     }
                 }
             }

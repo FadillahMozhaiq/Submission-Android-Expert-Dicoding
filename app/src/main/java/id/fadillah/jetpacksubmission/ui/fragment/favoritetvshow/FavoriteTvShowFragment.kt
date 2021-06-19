@@ -50,7 +50,7 @@ class FavoriteTvShowFragment : Fragment(), OnMovieItemClickListener {
                 showEmpty(true)
             else {
                 showEmpty(false)
-                moviesAdapter.submitList(it)
+                moviesAdapter.setData(it)
             }
             showLoading(false)
         }

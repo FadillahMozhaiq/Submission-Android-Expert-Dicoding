@@ -13,7 +13,7 @@ import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL
 import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL_ORIGINAL
 import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
 import id.fadillah.jetpacksubmission.utils.mapper.DataMapper
-import id.fadillah.jetpacksubmission.vo.Status
+import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
@@ -102,27 +102,36 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getDataTv(id: Int) {
         viewModel.getDetailTv(id).observe(this) { movie ->
-            when (movie.status) {
-                Status.LOADING -> {
-                    showLoading(true)
-                }
-                Status.ERROR -> {
-                    Toast.makeText(this, "Error: ${movie.message}", Toast.LENGTH_SHORT).show()
-                    showLoading(false)
-                }
-                Status.SUCCESS -> {
-                    showLoading(false)
-                    if (movie.data == null) {
-                        Toast.makeText(
-                            this,
-                            "No Detail Tv Show With This ID!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        genreAdapter.setMovies(movie.data.genres)
-                        setView(movie.data)
+            if (movie != null) {
+                when (movie) {
+                    is Resource.Loading -> {
+                        showLoading(true)
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(this, "Error: ${movie.message}", Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                    }
+                    is Resource.Success -> {
+                        showLoading(false)
+                        if (movie.data == null) {
+                            Toast.makeText(
+                                this,
+                                "No Detail Tv Show With This ID!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            genreAdapter.setMovies(movie.data.genres)
+                            setView(movie.data)
+                        }
+                        showLoading(false)
                     }
                 }
+            } else {
+                Toast.makeText(
+                    this,
+                    "No Detail Tv Show With This ID!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -138,27 +147,35 @@ class DetailActivity : AppCompatActivity() {
 
     private fun getDataMovie(id: Int) {
         viewModel.getDetailMovie(id).observe(this) { movie ->
-            when (movie.status) {
-                Status.LOADING -> {
-                    showLoading(true)
-                }
-                Status.ERROR -> {
-                    Toast.makeText(this, "Error: ${movie.message}", Toast.LENGTH_SHORT).show()
-                    showLoading(false)
-                }
-                Status.SUCCESS -> {
-                    showLoading(false)
-                    if (movie.data == null) {
-                        Toast.makeText(
-                            this,
-                            "No Detail Movie With This ID!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        genreAdapter.setMovies(movie.data.genres)
-                        setView(movie.data)
+            if (movie != null) {
+                when (movie) {
+                    is Resource.Loading -> {
+                        showLoading(true)
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(this, "Error: ${movie.message}", Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                    }
+                    is Resource.Success -> {
+                        showLoading(false)
+                        if (movie.data == null) {
+                            Toast.makeText(
+                                this,
+                                "No Detail Movie With This ID!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            genreAdapter.setMovies(movie.data.genres)
+                            setView(movie.data)
+                        }
                     }
                 }
+            } else {
+                Toast.makeText(
+                    this,
+                    "No Detail Movie With This ID!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

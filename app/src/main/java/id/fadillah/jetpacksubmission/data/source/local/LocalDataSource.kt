@@ -1,15 +1,14 @@
 package id.fadillah.jetpacksubmission.data.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.paging.DataSource
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteMovieEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.FavoriteTvEntity
 import id.fadillah.jetpacksubmission.data.source.local.model.MovieDatabaseEntity
 import id.fadillah.jetpacksubmission.data.source.local.room.MovieDao
-import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource
 import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource.decrement
 import id.fadillah.jetpacksubmission.utils.helper.EspressoIdlingResource.increment
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class LocalDataSource(private val movieDao: MovieDao) {
     //    Movies
@@ -20,26 +19,22 @@ class LocalDataSource(private val movieDao: MovieDao) {
     }
 
 
-    fun checkIsFavorite(id: Int, type: Int): LiveData<Boolean> =
-        when (type) {
-            0 -> Transformations.map(
-                movieDao.checkIsFavoriteMovie(id)
-            ) {
-                it.isNotEmpty()
-            }
-            1 -> Transformations.map(
-                movieDao.checkIsFavoriteTv(id)
-            ) {
-                it.isNotEmpty()
-            }
-            else -> Transformations.map(
-                movieDao.checkIsFavoriteMovie(id)
-            ) {
-                it.isNotEmpty()
+    fun checkIsFavorite(id: Int, type: Int): Flow<Boolean> =
+        flow {
+            when (type) {
+                0 -> movieDao.checkIsFavoriteMovie(id).map {
+                    it.isNotEmpty()
+                }
+                1 -> movieDao.checkIsFavoriteTv(id).map {
+                    it.isNotEmpty()
+                }
+                else -> movieDao.checkIsFavoriteMovie(id).map {
+                    it.isNotEmpty()
+                }
             }
         }
 
-    fun getMovieById(movieId: Int): LiveData<MovieDatabaseEntity> =
+    fun getMovieById(movieId: Int): Flow<MovieDatabaseEntity> =
         movieDao.getMovieById(movieId)
 
     suspend fun setFavorite(status: Boolean, id: Int, type: Int) {
@@ -69,7 +64,7 @@ class LocalDataSource(private val movieDao: MovieDao) {
         }
     }
 
-    fun updateMovie(movie: MovieDatabaseEntity): Int = with(movie) {
+    suspend fun updateMovie(movie: MovieDatabaseEntity): Int = with(movie) {
         movieDao.updateMovie(
             id,
             genres?.joinToString(", ") { it } ?: "Unknown",
@@ -78,54 +73,54 @@ class LocalDataSource(private val movieDao: MovieDao) {
     }
 
     //    Movies Upcoming
-    fun getAllUpcomingMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllUpcomingMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllUpcomingMovies()
 
     //    Movies Now Playing
-    fun getAllNowPlayingMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllNowPlayingMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllNowPlayingMovies()
 
     //    Movies Popular
-    fun getAllPopularMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllPopularMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllPopularMovies()
 
     //    Movies Top Rated
-    fun getAllTopRatedMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllTopRatedMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllTopRatedMovies()
 
     //    Movies Explore
-    fun getMovieExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getMovieExplore(query: String): Flow<List<MovieDatabaseEntity>> =
         movieDao.getMovieExplore("%$query%")
 
     //    Tv Explore
-    fun getTvExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getTvExplore(query: String):  Flow<List<MovieDatabaseEntity>> =
         movieDao.getTvExplore("%$query%")
 
     //    Person Explore
-    fun getPersonExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getPersonExplore(query: String): Flow<List<MovieDatabaseEntity>> =
         movieDao.getPersonExplore("%$query%")
 
     //    Company Explore
-    fun getCompanyExplore(query: String): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getCompanyExplore(query: String): Flow<List<MovieDatabaseEntity>> =
         movieDao.getCompanyExplore("%$query%")
 
     //    Multi Explore
-    fun getMultiSearch(query: String): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getMultiSearch(query: String): Flow<List<MovieDatabaseEntity>> =
         movieDao.getMultiSearch("%$query%")
 
     //    Movies Trending
-    fun getAllTrendingMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllTrendingMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllTrendingMovies()
 
     //    Tv Trending
-    fun getAllTrendingTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllTrendingTv(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllTrendingTv()
 
     //    Movies Trending
-    fun getAllFavoriteMovies(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllFavoriteMovies(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllFavoriteMovies()
 
     //    Tv Trending
-    fun getAllFavoriteTv(): DataSource.Factory<Int, MovieDatabaseEntity> =
+    fun getAllFavoriteTv(): Flow<List<MovieDatabaseEntity>> =
         movieDao.getAllFavoriteTv()
 }
