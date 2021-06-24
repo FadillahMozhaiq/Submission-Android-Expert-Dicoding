@@ -58,9 +58,4 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version" // tidak di update karena terdapat bug pada versi selanjutnya
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version" // optional - Kotlin Extensions and Coroutines support for Room
-
-//    Networking
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
-    debugImplementation "com.github.chuckerteam.chucker:library:3.4.0"
 }
