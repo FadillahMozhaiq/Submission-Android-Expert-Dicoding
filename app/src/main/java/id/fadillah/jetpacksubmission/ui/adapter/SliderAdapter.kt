@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import com.smarteist.autoimageslider.SliderViewAdapter
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.utils.helper.ConstantHelper.IMAGE_URL
+import id.fadillah.jetpacksubmission.core.utils.helper.ImageHelper
 import id.fadillah.jetpacksubmission.databinding.ImageSliderItemBinding
-import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL
-import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
 
 class SliderAdapter(private val movieItemClickListener: OnMovieItemClickListener) :
     SliderViewAdapter<SliderAdapter.SliderViewHolder>() {

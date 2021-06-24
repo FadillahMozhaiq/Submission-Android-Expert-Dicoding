@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import id.fadillah.jetpacksubmission.R
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.utils.helper.PreferenceHelper
+import id.fadillah.jetpacksubmission.core.vo.Resource
 import id.fadillah.jetpacksubmission.databinding.FragmentHomeBinding
 import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity
 import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity.Companion.EXTRA_DETAIL
 import id.fadillah.jetpacksubmission.ui.adapter.*
 import id.fadillah.jetpacksubmission.ui.fragment.customdialog.CustomDialog
-import id.fadillah.jetpacksubmission.utils.helper.PreferenceHelper
-import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -242,5 +242,10 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
             getString(R.string.transition_name)
         )
         startActivity(intent, options.toBundle())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -32,7 +32,7 @@ class CustomDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.closeLayout.setOnClickListener {
+        binding.tvClose.setOnClickListener {
             dismiss()
         }
         binding.root.setOnClickListener {

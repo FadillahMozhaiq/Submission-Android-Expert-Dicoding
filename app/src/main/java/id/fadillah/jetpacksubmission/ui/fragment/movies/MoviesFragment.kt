@@ -11,12 +11,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import id.fadillah.jetpacksubmission.R
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.vo.Resource
 import id.fadillah.jetpacksubmission.databinding.FragmentMoviesBinding
 import id.fadillah.jetpacksubmission.ui.activity.detail.DetailActivity
 import id.fadillah.jetpacksubmission.ui.adapter.MoviesAdapter
 import id.fadillah.jetpacksubmission.ui.adapter.OnMovieItemClickListener
-import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class MoviesFragment : Fragment(), OnMovieItemClickListener {

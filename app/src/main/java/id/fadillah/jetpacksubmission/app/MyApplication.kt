@@ -1,7 +1,9 @@
 package id.fadillah.jetpacksubmission.app
 
 import android.app.Application
-import id.fadillah.jetpacksubmission.di.core.*
+import id.fadillah.jetpacksubmission.core.di.databaseModule
+import id.fadillah.jetpacksubmission.core.di.networkModule
+import id.fadillah.jetpacksubmission.core.di.repositoryModule
 import id.fadillah.jetpacksubmission.di.useCaseModule
 import id.fadillah.jetpacksubmission.di.viewModelModule
 import org.koin.android.ext.koin.androidContext

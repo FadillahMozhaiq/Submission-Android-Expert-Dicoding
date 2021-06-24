@@ -48,7 +48,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount == 0) {
             if (backPressCount == 0) {
-                Toast.makeText(this, "Press once again to exit!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Press once again to exit!", Toast.LENGTH_SHORT)
+                    .show()
                 backPressCount++
             } else
                 super.onBackPressed()

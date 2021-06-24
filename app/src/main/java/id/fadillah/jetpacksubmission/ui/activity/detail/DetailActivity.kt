@@ -6,14 +6,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.fadillah.jetpacksubmission.R
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.utils.helper.ConstantHelper.IMAGE_URL
+import id.fadillah.jetpacksubmission.core.utils.helper.ConstantHelper.IMAGE_URL_ORIGINAL
+import id.fadillah.jetpacksubmission.core.utils.helper.ImageHelper
+import id.fadillah.jetpacksubmission.core.utils.mapper.DataMapper
+import id.fadillah.jetpacksubmission.core.vo.Resource
 import id.fadillah.jetpacksubmission.databinding.ActivityDetailBinding
 import id.fadillah.jetpacksubmission.ui.adapter.GenreAdapter
-import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL
-import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL_ORIGINAL
-import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
-import id.fadillah.jetpacksubmission.utils.mapper.DataMapper
-import id.fadillah.jetpacksubmission.vo.Resource
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
@@ -120,7 +120,7 @@ class DetailActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            genreAdapter.setMovies(movie.data.genres)
+                            genreAdapter.setMovies(movie.data?.genres)
                             setView(movie.data)
                         }
                         showLoading(false)
@@ -165,7 +165,7 @@ class DetailActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            genreAdapter.setMovies(movie.data.genres)
+                            genreAdapter.setMovies(movie.data?.genres)
                             setView(movie.data)
                         }
                     }
@@ -180,7 +180,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setView(data: MovieEntity) {
+    private fun setView(data: MovieEntity?) {
+        data ?: return
         with(binding) {
             with(data) {
                 ImageHelper.getImage(detailMovieImg, IMAGE_URL + posterPath)
@@ -203,10 +204,10 @@ class DetailActivity : AppCompatActivity() {
                     detailMovieTagline.text = tagLine
                 }
                 if (status != null) {
-                    detailMovieRelease.text = status.take(10)
+                    detailMovieRelease.text = status!!.take(10)
                 }
                 if (date != null) {
-                    detailMovieDate.text = DataMapper.convertDate(date)
+                    detailMovieDate.text = DataMapper.convertDate(date!!)
                 }
             }
         }

@@ -26,8 +26,6 @@
     <string name="transition_name">profileTransition</string>
     <string name="overview">Overview</string>
     <string name="x">X</string>
-    <string name="preference_key">id.fadillah.jetpacksubmission.PREFERENCE_KEY</string>
-    <string name="preference_name">id.fadillah.jetpacksubmission.PREFERENCE_NAME</string>
     <string name="ied_fitri">Selamat Hari Raya Idul Fitri</string>
     <string name="apologize">Mohon Maaf Lahir dan Batin</string>
 

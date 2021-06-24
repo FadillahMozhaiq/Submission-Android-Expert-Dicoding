@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import id.fadillah.jetpacksubmission.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.data.model.MovieEntity
+import id.fadillah.jetpacksubmission.core.utils.diffutil.MovieDiffUtil
+import id.fadillah.jetpacksubmission.core.utils.helper.ConstantHelper.IMAGE_URL
+import id.fadillah.jetpacksubmission.core.utils.helper.ImageHelper
 import id.fadillah.jetpacksubmission.databinding.ItemMovieBinding
-import id.fadillah.jetpacksubmission.utils.diffutil.MovieDiffUtil
-import id.fadillah.jetpacksubmission.utils.helper.ConstantHelper.IMAGE_URL
-import id.fadillah.jetpacksubmission.utils.helper.ImageHelper
 
 class MoviesAdapter(private val movieItemClickListener: OnMovieItemClickListener) :
     RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
