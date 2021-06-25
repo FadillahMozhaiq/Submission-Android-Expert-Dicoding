@@ -244,6 +244,11 @@ class HomeFragment : Fragment(), OnMovieItemClickListener {
         startActivity(intent, options.toBundle())
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.imageSlider.stopAutoCycle()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
