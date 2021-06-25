@@ -3,7 +3,6 @@ package id.fadillah.jetpacksubmission.core.di
 import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import id.fadillah.jetpacksubmission.core.BuildConfig
 import id.fadillah.jetpacksubmission.core.data.MovieRepository
 import id.fadillah.jetpacksubmission.core.data.source.local.LocalDataSource
 import id.fadillah.jetpacksubmission.core.data.source.local.room.MovieDatabase
