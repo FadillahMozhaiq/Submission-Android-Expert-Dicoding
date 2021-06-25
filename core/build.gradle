@@ -22,13 +22,15 @@ android {
     }
 
     buildTypes {
+        release {
+            buildConfigField 'String', 'API_KEY', '"d06049c914be754d5d5b390985ed35f6"'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         debug {
             buildConfigField 'String', 'API_KEY', '"d06049c914be754d5d5b390985ed35f6"'
-        }
-        release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'API_KEY', '"d06049c914be754d5d5b390985ed35f6"'
         }
     }
     compileOptions {
@@ -54,8 +56,21 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+//    Networking
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.github.chuckerteam.chucker:library:3.4.0"
+
 //    Storage
     implementation "androidx.room:room-runtime:$room_version" // tidak di update karena terdapat bug pada versi selanjutnya
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version" // optional - Kotlin Extensions and Coroutines support for Room
+
+//    Cryptography
+//    Shared Preference
+    implementation "androidx.security:security-crypto:1.1.0-alpha03"
+    implementation 'com.scottyab:secure-preferences-lib:0.1.7'
+
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.1.0"
 }
