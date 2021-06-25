@@ -1,4 +1,5 @@
 ##---------------Begin: proguard configuration for SQLCipher  ----------
+## Telah di copy dari modul
 -keep,includedescriptorclasses class net.sqlcipher.** { *; }
 -keep,includedescriptorclasses interface net.sqlcipher.** { *; }
 
@@ -16,6 +17,7 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
+## Telah di copy dari modul
 -keep class com.google.gson.examples.android.model.** { <fields>; }
 
 # Prevent proguard from stripping interface information from TypeAdapter, TypeAdapterFactory,
